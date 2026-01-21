@@ -138,31 +138,34 @@ elif page == "Prediksi Churn":
         )
 
     if st.button("Prediksi"):
-        # =================================================
-        # TEMPLATE INPUT (HARUS SESUAI TRAINING)
-        # =================================================
-        input_df = pd.DataFrame(columns=X.columns)
-        input_df.loc[0] = 0  # default aman
+    # ==================================
+    # AMBIL TEMPLATE DATA ASLI 
+    # ==================================
+        input_df = X.sample(1, random_state=42).copy()
 
-        # isi input user
-        input_df.loc[0, "tenure"] = tenure
-        input_df.loc[0, "MonthlyCharges"] = monthly_charges
-        input_df.loc[0, "Contract"] = contract
-        input_df.loc[0, "InternetService"] = internet_service
-        input_df.loc[0, "PaymentMethod"] = payment_method
+    # ==================================
+    # TIMPA DENGAN INPUT USER
+    # ==================================
+        input_df["tenure"] = tenure
+        input_df["MonthlyCharges"] = monthly_charges
+        input_df["Contract"] = contract
+        input_df["InternetService"] = internet_service
+        input_df["PaymentMethod"] = payment_method
+    # ==================================
+    # PREDIKSI (PIPELINE)
+    # ==================================
+    prob = model.predict_proba(input_df)[0][1]
+    prediction = model.predict(input_df)[0]
 
-        # =================================================
-        # PREDIKSI
-        # =================================================
-        prob = model.predict_proba(input_df)[0][1]
-        prediction = model.predict(input_df)[0]
+    # ==================================
+    # OUTPUT
+    # ==================================
+    st.subheader("Hasil Prediksi")
 
-        st.subheader("Hasil Prediksi")
-
-        if prediction == 1:
-            st.error(f"Pelanggan diprediksi **CHURN** (Probabilitas: {prob:.2f})")
-        else:
-            st.success(f"Pelanggan diprediksi **TIDAK CHURN** (Probabilitas: {prob:.2f})")
+    if prediction == 1:
+        st.error(f"Pelanggan diprediksi **CHURN** (Probabilitas: {prob:.2f})")
+    else:
+        st.success(f"Pelanggan diprediksi **TIDAK CHURN** (Probabilitas: {prob:.2f})")
 
 # =========================================================
 # EVALUASI MODEL
