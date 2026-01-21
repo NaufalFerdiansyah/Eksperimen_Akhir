@@ -73,7 +73,7 @@ Aplikasi Streamlit menyediakan fitur:
 - **Dokumentasi Proyek**
 
 🔗 **Link Aplikasi Streamlit:**  
-_(isi setelah deploy)_
+(https://churn-prediction-9ux2j6z4asmnlvqfucjaqd.streamlit.app/)
 
 ---
 
